@@ -3,9 +3,29 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const mockChuncks = require('./mock.config')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
+}
+
+const publicPath = (env) => {
+  if (env === 'production') {
+    return config.build.assetsPublicPath
+  } else if(env === 'test') {
+    return config.test.assetsPublicPath
+  } else {
+    return config.dev.assetsPublicPath
+  }
+}
+
+const entry = () => {
+  let entryObj = {};
+  if( mockChuncks.isMock ) {
+    entryObj.mock = './src/mock.js'
+  }
+  entryObj.app = './src/main.js'
+  return entryObj;
 }
 
 const createLintingRule = () => ({
@@ -21,15 +41,11 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+  entry: entry(),
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: publicPath(process.env.NODE_ENV)
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

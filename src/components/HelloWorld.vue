@@ -1,113 +1,76 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+  <div class="index">
+    <div v-for="(item, key) in newsListShow" :key="key">
+      <news-cell
+        :newsDate="item"
+        :key="key"
+      ></news-cell>
+    </div>
   </div>
 </template>
 
 <script>
+import NewsCell from './newCell'
+
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    name : 'index',
+    data () {
+        return {
+            newsListShow : [],
+        }
+    },
+    components : {
+        NewsCell
+    },
+    created () {
+        const that = this
+        that.$http.get('/course/getRecommendOnAirLiveList', {
+            params : {
+                grade_id : '4',
+                area : '010'
+            }
+        }).then( res => {
+            console.warn(res);
+        }).catch( error => {
+            console.warn(error);
+        });
     }
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  .topNav{
+    width: 100%;
+    background: #ED4040;
+    position: fixed;
+    top:0rem;
+    left: 0;
+    z-index: 10;
+  }
+  .simpleNav{
+    width: 100%;
+    line-height: 1rem;
+    overflow: hidden;
+    overflow-x: auto;
+    text-align: center;
+    font-size: 0;
+    font-family: '微软雅黑';
+    white-space: nowrap;
+  }
+  .simpleNav::-webkit-scrollbar{height:0px}
+  .simpleNavBar{
+    display: inline-block;
+    width: 1.2rem;
+    color:#fff;
+    font-size:0.3rem;
+  }
+  .navActive{
+    color: #000;
+    border-bottom: 0.05rem solid #000;
+  }
+  .placeholder{
+    width:100%;
+    height: 1rem;
+  }
 </style>

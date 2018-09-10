@@ -4,12 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-Vue.config.productionTip = false
+import http from './axios/api'
 
+// 挂载axios
+Vue.prototype.$http = http.instance;
+
+Vue.config.productionTip = false
+console.log('aa')
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+    el : '#app',
+    router,
+    components : { App },
+    template : '<App/>'
 })
