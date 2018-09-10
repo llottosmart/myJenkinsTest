@@ -10,7 +10,7 @@
     "mock": "npm run dev --mock",
     "lint": "eslint --ext .js,.vue src",
     "build-product": "node build/build.js",
-    "build-test": "node build/build_test.js"
+    "buildTest": "node build/build_test.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
